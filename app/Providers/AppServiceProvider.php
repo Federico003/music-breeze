@@ -21,4 +21,17 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+
+    public static function redirectToByUserRole(): string
+    {
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $role = $user?->userType?->name ?? null;
+
+        return match ($role) {
+            'admin' => '/admin/dashboard',
+            'insegnante' => '/insegnante/dashboard',
+            'studente' => '/studente/dashboard',
+            default => '/dashboard', // fallback
+        };
+    }
 }

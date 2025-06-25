@@ -2,14 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Teacher extends Model
 {
-    use HasFactory, Notifiable;
-
     // Seleziona i campi che possono essere assegnati in massa
     protected $fillable = [
         'name',
@@ -66,11 +62,17 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Get the user type associated with the user.
-     */
-    public function userType()
+    public $timestamps = true;
+
+    protected $table = 'teachers';
+
+    public function courses()
     {
-        return $this->belongsTo(UserType::class);
+        return $this->belongsToMany(Course::class, 'teachers_courses');
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(CourseEnrollment::class);
     }
 }

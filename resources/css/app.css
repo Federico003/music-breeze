@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Tema chiaro */
+body {
+  color: black;
+}
+
+/* Tema scuro */
+body.dark-theme {
+  color: white;
+}
+
+.icon {
+  fill: black;
+}
+
+body.dark-theme .icon {
+  fill: white;
+}

@@ -3,12 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
+use ESolution\DBEncryption\Traits\EncryptedAttribute;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Log;
+use App\Models\CourseEnrollment;
 
-class User extends Authenticatable
+
+class Student extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
     // Seleziona i campi che possono essere assegnati in massa
     protected $fillable = [
@@ -66,11 +71,16 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Get the user type associated with the user.
-     */
-    public function userType()
-    {
-        return $this->belongsTo(UserType::class);
-    }
+    // public function lessons()
+    // {
+    //     return $this->hasMany(Lesson::class, 'course_enrollment_id');
+    // }
+
+public function courseEnrollments()
+{
+    return $this->belongsToMany(Course::class, 'course_enrollments')
+                ->withPivot('teacher_id');
+}
+
+
 }

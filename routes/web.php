@@ -6,8 +6,11 @@ use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\CoursesController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\PaymentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Models\Student;
+use App\Models\CourseEnrollment;
 // use App\Http\Controllers\CoursesController;
 
 Route::get('/', function () {
@@ -67,18 +70,29 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::delete('/user/{id}/delete', [UserController::class, 'delete'])->name('delete-user');
 
     Route::get('teacher-courses', [TeacherController::class, 'courses'])->name('teacher-courses');
-    Route::put('/teacher-courses/update/{teacher}', [TeacherController::class, 'updateCoursesTeacher'])->name('update-teacher-courses'); 
-    
+    Route::put('/teacher-courses/update/{teacher}', [TeacherController::class, 'updateCoursesTeacher'])->name('update-teacher-courses');
+
     Route::get('student-courses', [StudentController::class, 'indexStudentCourses'])->name('student-courses');
     Route::put('/student-courses/update/{student}', [StudentController::class, 'updateStudentCourses'])->name('update-student-courses');
 
     Route::get('/payments', [DashboardController::class, 'viewPayments'])->name('payments');
-    Route::get('/create-payment', [DashboardController::class, 'viewCreatePayment'])->name('create-payment');
-    Route::post('/store-payment', [DashboardController::class, 'storePayment'])->name('store-payment');
+    Route::get('/create-payment', [PaymentController::class, 'viewCreatePayment'])->name('create-payment');
+    Route::post('/store-payment', [PaymentController::class, 'store'])->name('store-payment');
     Route::delete('/payment/{id}/delete', [DashboardController::class, 'deletePayment'])->name('delete-payment');
 
-
-    
+    Route::get('/payment/students/{student}/courses', function (Student $student) {
+        $courses = CourseEnrollment::where('student_id', $student->id)
+        ->with('course:id,name') // Carica solo id e name del corso
+        ->get()
+        ->map(function ($enrollment) {
+            return [
+                'id' => $enrollment->course->id,
+                'name' => $enrollment->course->name,
+            ];
+        });
+        //dd($courses);
+        return response()->json($courses);
+    });
 });
 
 Route::middleware(['auth', 'role:insegnante'])->group(function () {
@@ -95,4 +109,4 @@ Route::middleware(['auth', 'role:studente'])->group(function () {
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -76,7 +76,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-black-500 dark:text-gray-400">Docenti</p>
-                            <h3 class="text-2xl font-bold text-orange-600">18</h3>
+                            <h3 class="text-2xl font-bold text-orange-600 dark:text-indigo-600">18</h3>
                         </div>
                         <div
                             class="w-12 h-12 rounded-full bg-orange-100 dark:bg-indigo-600 flex items-center justify-center text-orange-600 dark:text-indigo-200">
@@ -181,7 +181,7 @@
                         <span class="text-gray-700 dark:text-gray-400">Nuova Lezione</span>
                     </button>
 
-                    <button
+                    <button onclick="window.location.href='{{ route('admin.create-payment') }}'"
                         class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 m-4 flex flex-col items-center justify-center hover:bg-indigo-100 dark:hover:bg-indigo-700 transition duration-300">
                         <div
                             class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-600 flex items-center justify-center text-indigo-600 dark:text-indigo-200 mb-2">

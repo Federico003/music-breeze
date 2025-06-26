@@ -30,16 +30,39 @@ class PaymentController extends Controller
             'course_id' => ['required', 'exists:courses,id'],
             'payment_type_id' => ['required', 'exists:payment_type,id'],
             'month' => ['nullable', 'exists:month,id'],
-            'year_monthly' => ['digits:4', 'integer', 'min:1900', 'max:2100'],
+
+            'year_monthly' => [
+                'exclude_unless:payment_type_id,1',
+                'required_if:payment_type_id,1',
+                'digits:4',
+                'integer',
+                'min:1900',
+                'max:2100',
+            ],
+
+            'year_annual' => [
+                'exclude_unless:payment_type_id,2',
+                'required_if:payment_type_id,2',
+                'digits:4',
+                'integer',
+                'min:1900',
+                'max:2100',
+            ],
+
             'amount' => ['required', 'numeric', 'min:0'],
         ]);
+
+        // Determina l'anno corretto in base al tipo di pagamento
+        $year = $validated['payment_type_id'] == 1
+            ? $validated['year_monthly']
+            : $validated['year_annual'];
 
         Payment::create([
             'student_id' => $validated['student_id'],
             'course_id' => $validated['course_id'],
             'payment_type_id' => $validated['payment_type_id'],
             'month_id' => $validated['month'] ?? null,
-            'year' => $validated['year_monthly'],
+            'year' => $year,
             'amount' => $validated['amount'],
         ]);
 

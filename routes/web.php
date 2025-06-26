@@ -13,6 +13,9 @@ use App\Models\Student;
 use App\Models\CourseEnrollment;
 // use App\Http\Controllers\CoursesController;
 
+
+use App\Http\Controllers\Teacher\DashboardController as Dashboard;;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,6 +23,7 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
+
 
 // Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login.');
 
@@ -95,10 +99,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     });
 });
 
-Route::middleware(['auth', 'role:insegnante'])->group(function () {
-    Route::get('/insegnante', function () {
-        return view('insegnante.dashboard');
-    })->name('insegnante.dashboard');
+Route::middleware(['auth', 'role:insegnante'])->prefix('insegnante')->name('insegnante.')->group(function () {
+     Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
+
+
 });
 
 Route::middleware(['auth', 'role:studente'])->group(function () {

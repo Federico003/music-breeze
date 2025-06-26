@@ -238,12 +238,3 @@
         </div>
     </div>
 </x-app-layout>
-
-{{-- <script>
-    function toggleTheme() {
-        const current = localStorage.theme;
-        const newTheme = current === 'dark' ? 'light' : 'dark';
-        localStorage.theme = newTheme;
-        location.reload();
-    }
-</script> --}}

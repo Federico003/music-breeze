@@ -8,7 +8,7 @@
         <h1 class="text-black dark:text-white text-2xl font-semibold mt-4 mb-6">Gestione pagamenti</h1>
 
         <div class="w-full sm:max-w-2xl px-6 py-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
-            <form method="POST" action="{{route('admin.store-payment')}}">
+            <form method="POST" action="{{ route('admin.store-payment') }}">
                 @csrf
 
                 {{-- Studente --}}
@@ -64,7 +64,8 @@
                     <div id="monthly-detail" class="hidden">
                         <x-input-label for="month" :value="__('Seleziona Mese')" />
                         <select name="month" id="month"
-                            class="form-control selectpicker block mt-1 w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" required>
+                            class="form-control selectpicker block mt-1 w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                            required>
                             <option value="">{{ __('-- Seleziona mese --') }}</option>
                             @foreach ($months as $month)
                                 <option value="{{ $month->id }}">{{ $month->name }}</option>
@@ -86,7 +87,8 @@
                 <div id="amount-container" class="mb-4 hidden">
                     <x-input-label for="amount" :value="__('Importo (€)')" />
                     <input type="number" name="amount" id="amount" step="0.01" min="0"
-                        class="block mt-1 w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" required/>
+                        class="block mt-1 w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                        required />
                     @error('amount')
                         <p class="text-red-600 mt-1">{{ $message }}</p>
                     @enderror
@@ -185,16 +187,32 @@
                     monthlyDetail.classList.add('hidden');
                     annualDetail.classList.add('hidden');
 
+                    // Prendi i campi input
+                    const monthSelect = document.getElementById('month');
+                    const yearMonthlyInput = document.getElementById('year_monthly');
+                    const yearAnnualInput = document.getElementById('year_annual');
+
                     if (selectedType === 'mensile') {
                         monthlyDetail.classList.remove('hidden');
+
+                        // Attiva solo i campi per pagamento mensile
+                        monthSelect.disabled = false;
+                        yearMonthlyInput.disabled = false;
+                        yearAnnualInput.disabled = true;
                     } else if (selectedType === 'annuale') {
                         annualDetail.classList.remove('hidden');
+
+                        // Attiva solo i campi per pagamento annuale
+                        monthSelect.disabled = true;
+                        yearMonthlyInput.disabled = true;
+                        yearAnnualInput.disabled = false;
                     }
 
                     amountContainer.classList.remove('hidden');
                     submitButton.classList.remove('hidden');
                 });
             });
+
         });
     </script>
 </x-app-layout>

@@ -82,5 +82,10 @@ public function courseEnrollments()
                 ->withPivot('teacher_id');
 }
 
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
 
 }

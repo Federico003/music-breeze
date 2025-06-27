@@ -23,16 +23,24 @@
         <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
             @if (Route::has('login'))
                 <nav class="flex items-center justify-end gap-4">
-                     @php
-                        $role = auth()->user()->userType->name;
-                        $dashboardUrl = match ($role) {
-                            'admin' => '/admin/dashboard',
-                            'insegnante' => '/insegnante/dashboard',
-                            'studente' => '/studente/dashboard',
-                            default => '/',
-                        };
-                    @endphp
-                    @auth
+                     @auth
+                @php
+                    $user = auth()->user();
+                    $role = strtolower($user->userType?->name ?? 'guest');
+
+                    // Debug ruolo
+                     //dd($role);
+
+                    $dashboardUrl = match ($role) {
+                        'admin' => '/admin/dashboard',
+                        'insegnante' => '/insegnante/dashboard',
+                        'studente' => '/studente/dashboard',
+                        default => '/',
+                    };
+
+                    //dd($dashboardUrl)
+                @endphp
+
                    
                         <a
                             href="{{ url($dashboardUrl) }}"

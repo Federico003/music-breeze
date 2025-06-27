@@ -56,23 +56,21 @@
 
                     
 
-                    <button
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 m-4 flex flex-col items-center justify-center hover:bg-indigo-100 dark:hover:bg-indigo-700 transition duration-300">
+                    <button onclick="window.location.href='{{ route('insegnante.create-lesson') }}'"
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 m-4 flex flex-col items-center justify-center hover:bg-orange-100 dark:hover:bg-indigo-700 transition duration-300">
                         <div
-                            class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-600 flex items-center justify-center text-indigo-600 dark:text-indigo-200 mb-2">
+                            class="w-10 h-10 rounded-full bg-orange-100 dark:bg-indigo-600 flex items-center justify-center text-orange-600 dark:text-indigo-200 mb-2">
                             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
                                 <path fill="currentColor"
                                     d="M436 160H12c-6.6 0-12-5.4-12-12v-36c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48v36c0 6.6-5.4 12-12 12zM12 192h424c6.6 0 12 5.4 12 12v260c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V204c0-6.6 5.4-12 12-12zm316 140c0-6.6-5.4-12-12-12h-60v-60c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v60h-60c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h60v60c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12v-60h60c6.6 0 12-5.4 12-12v-40z" />
                             </svg>
                         </div>
-                        <span class="text-gray-700 dark:text-gray-400">Nuova Lezione</span>
+                        <span class="text-gray-700 dark:text-gray-400">NUOVA LEZIONE</span>
                     </button>
                 </div>
             </section>
-
-
-            {{-- </div> --}}
+            
         </div>
     </div>
 </x-app-layout>

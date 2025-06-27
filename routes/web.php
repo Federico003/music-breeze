@@ -14,7 +14,8 @@ use App\Models\CourseEnrollment;
 // use App\Http\Controllers\CoursesController;
 
 
-use App\Http\Controllers\Teacher\DashboardController as Dashboard;;
+use App\Http\Controllers\Teacher\DashboardController as Dashboard;
+use App\Http\Controllers\Teacher\LessonController as Lesson;
 
 Route::get('/', function () {
     return view('welcome');
@@ -101,6 +102,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
 Route::middleware(['auth', 'role:insegnante'])->prefix('insegnante')->name('insegnante.')->group(function () {
      Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
+     Route::get('create-lesson', [Lesson::class, 'viewCreateLesson'])->name('create-lesson');
+     Route::post('/store-lesson', [Lesson::class, 'store'])->name('store-lesson');
 
 
 });

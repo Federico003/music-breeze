@@ -17,12 +17,12 @@
                         'Data di Nascita',
                         'Telefono',
                         'Email',
-                        'Creato',
+                        'Inserito il',
                         'Aggiornato',
                         '',
                     ]">
                         @foreach ($students as $student)
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                            <tr class="hover:bg-orange-200 dark:hover:bg-gray-700 transition">
                                 <td class="px-4 py-3">{{ $student->id }}</td>
                                 <td class="px-4 py-3">{{ $student->name }}</td>
                                 <td class="px-4 py-3">{{ $student->surname }}</td>

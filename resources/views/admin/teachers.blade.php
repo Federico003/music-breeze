@@ -10,9 +10,9 @@
             <div class="bg-grey-200 dark:bg-gray-900 shadow-sm sm:rounded-2xl m-6 mb-6">
 
                 <div class="overflow-x-auto sm:rounded-lg bg-grey-200">
-                    <x-table :headers="['ID', 'Nome', 'Cognome', 'Data di Nascita', 'Telefono', 'Email', 'Creato', 'Aggiornato', '']">
+                    <x-table :headers="['ID', 'Nome', 'Cognome', 'Data di Nascita', 'Telefono', 'Email', 'Inserito il', 'Aggiornato', '']">
                         @foreach ($teachers as $teacher)
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                            <tr class="hover:bg-orange-200 dark:hover:bg-gray-700 transition">
                                 <td class="px-4 py-3">{{ $teacher->id }}</td>
                                 <td class="px-4 py-3">{{ $teacher->name }}</td>
                                 <td class="px-4 py-3">{{ $teacher->surname }}</td>

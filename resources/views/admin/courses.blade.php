@@ -12,7 +12,7 @@
                 <div class="overflow-x-auto sm:rounded-lg bg-grey-200" >
                     <x-table :headers="['ID', 'Nome', 'Descrizione', 'Inserito il', 'Aggiornato il', '']" >
                         @foreach ($courses as $course)
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                            <tr class="hover:bg-orange-200 dark:hover:bg-gray-700 transition">
                                 <td class="px-4 py-3">{{ $course->id }}</td>
                                 <td class="px-4 py-3">{{ $course->name }}</td>
                                 <td class="px-4 py-3">{{ $course->description }}</td>

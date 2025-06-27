@@ -3,9 +3,6 @@
 // File: app/Http/Controllers/Admin/DashboardController.php
 namespace App\Http\Controllers\Teacher;
 
-use App\Models\Ingrediente;
-use App\Models\Pizza;
-use App\Models\Course;
 use App\Models\CourseEnrollment;
 use App\Models\Lesson;
 use App\Http\Controllers\Controller;
@@ -102,4 +99,5 @@ class LessonController extends Controller
         ->withErrors(['error' => 'Errore durante l\'aggiunta della lezione.'])
         ->with('success', 'Lezione aggiunta con successo!');
     }
+    
 }

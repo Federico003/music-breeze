@@ -7,11 +7,13 @@ use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\CoursesController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PaymentController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Models\Student;
 use App\Models\CourseEnrollment;
 // use App\Http\Controllers\CoursesController;
+
+use Illuminate\Support\Facades\Route;
 
 
 use App\Http\Controllers\Teacher\DashboardController as Dashboard;
@@ -98,6 +100,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         //dd($courses);
         return response()->json($courses);
     });
+
+    Route::get('/lessons', [App\Http\Controllers\Admin\LessonController::class, 'show'])->name('show-lessons');
 });
 
 Route::middleware(['auth', 'role:insegnante'])->prefix('insegnante')->name('insegnante.')->group(function () {

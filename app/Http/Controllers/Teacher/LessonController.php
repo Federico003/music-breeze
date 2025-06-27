@@ -43,6 +43,27 @@ class LessonController extends Controller
         return view('teacher.createLesson', compact('students', 'courses'));
     }
 
+    public function getCourses($studentId)
+{
+    $teacherId = Auth::id();
+
+    $enrollments = CourseEnrollment::with('course')
+        ->where('student_id', $studentId)
+        ->where('teacher_id', $teacherId)
+        ->get();
+
+    $courses = $enrollments->pluck('course')->unique('id');
+
+    // Debug temporaneo:
+    dd($courses);
+
+    return response()->json($courses->map(function ($course) {
+        return ['id' => $course->id, 'name' => $course->name];
+    })->values());
+}
+
+
+
 
     public function store(Request $request)
     {
@@ -77,6 +98,8 @@ class LessonController extends Controller
             'duration' => $validated['duration'],
         ]);
 
-        return redirect()->back()->with('success', 'Lezione aggiunta con successo!');
+        return redirect()->back()
+        ->withErrors(['error' => 'Errore durante l\'aggiunta della lezione.'])
+        ->with('success', 'Lezione aggiunta con successo!');
     }
 }

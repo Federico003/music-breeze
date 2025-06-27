@@ -105,6 +105,26 @@ Route::middleware(['auth', 'role:insegnante'])->prefix('insegnante')->name('inse
      Route::get('create-lesson', [Lesson::class, 'viewCreateLesson'])->name('create-lesson');
      Route::post('/store-lesson', [Lesson::class, 'store'])->name('store-lesson');
 
+     //Route::get('/get-courses/{studentId}', [Lesson::class, 'getCourses']);
+
+     Route::get('/get-courses/{studentId}', function ($studentId) {
+    $teacherId = auth()->id(); // insegnante autenticato
+
+    $courses = CourseEnrollment::where('student_id', $studentId)
+        ->where('teacher_id', $teacherId) // filtra per insegnante loggato
+        ->with('course:id,name') // carica solo id e nome corso
+        ->get()
+        ->map(function ($enrollment) {
+            return [
+                'id' => $enrollment->course->id,
+                'name' => $enrollment->course->name,
+            ];
+        });
+        // dd($courses);
+
+    return response()->json($courses);
+});
+
 
 });
 

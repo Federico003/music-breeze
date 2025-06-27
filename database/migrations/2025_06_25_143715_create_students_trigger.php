@@ -88,8 +88,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::unprepared('DROP TRIGGER IF EXISTS trg_after_insert_user_student');
-        DB::unprepared('DROP TRIGGER IF EXISTS trg_after_update_user_student');
-        DB::unprepared('DROP TRIGGER IF EXISTS trg_after_delete_user_student');
+        DB::unprepared('DROP TRIGGER IF EXISTS trg_delete_course_enrollments_after_teacher_course_deleted');
     }
 };

@@ -38,6 +38,7 @@ class LessonController extends Controller
         $students = $enrollments->pluck('student')->unique('id');
         //dd($students);
         $courses = $enrollments->pluck('course')->unique('id');
+        //dd($courses);
 
         return view('teacher.createLesson', compact('students', 'courses'));
     }

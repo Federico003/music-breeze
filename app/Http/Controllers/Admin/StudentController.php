@@ -101,24 +101,52 @@ class StudentController extends Controller
     }
 
     public function updateStudentCourses(Request $request, $student_id)
-    {
-        $student = Student::findOrFail($student_id);
-        $data = $request->input('courses_teachers', []);
+{
+    $student = Student::findOrFail($student_id);
+    $submitted = $request->input('courses_teachers', []);
 
-        // Cancella le vecchie iscrizioni
-        CourseEnrollment::where('student_id', $student->id)->delete();
+    // Recupera le iscrizioni esistenti
+    $existingEnrollments = CourseEnrollment::where('student_id', $student->id)->get();
 
-        // Aggiunge le nuove iscrizioni
-        foreach ($data as $course_id => $teacher_id) {
-            if (!empty($teacher_id)) {
+    // Crea una mappa [course_id => teacher_id] delle iscrizioni esistenti
+    $existingMap = $existingEnrollments->mapWithKeys(function ($enrollment) {
+        return [$enrollment->course_id => $enrollment];
+    });
+
+    foreach ($submitted as $course_id => $teacher_id) {
+        $course_id = (int)$course_id;
+        $teacher_id = $teacher_id ? (int)$teacher_id : null;
+
+        if ($teacher_id) {
+            // Se esiste già un'iscrizione per quel corso
+            if (isset($existingMap[$course_id])) {
+                $enrollment = $existingMap[$course_id];
+                // Se il docente è cambiato, aggiorna
+                if ($enrollment->teacher_id !== $teacher_id) {
+                    $enrollment->update([
+                        'teacher_id' => $teacher_id,
+                    ]);
+                }
+                // Rimuovi dalla mappa perché è ancora valido
+                unset($existingMap[$course_id]);
+            } else {
+                // Nuova iscrizione
                 CourseEnrollment::create([
                     'student_id' => $student->id,
                     'course_id' => $course_id,
                     'teacher_id' => $teacher_id,
                 ]);
             }
+        } else {
+            // Se non c'è docente selezionato, elimina iscrizione se esiste
+            if (isset($existingMap[$course_id])) {
+                $existingMap[$course_id]->delete();
+                unset($existingMap[$course_id]);
+            }
         }
-
-        return redirect()->back()->with('success', 'Iscrizioni aggiornate con successo.');
     }
+
+    return redirect()->back()->with('success', 'Iscrizioni aggiornate con successo.');
+}
+
 }

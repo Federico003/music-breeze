@@ -77,11 +77,11 @@
                     <div class="alert alert-success mt-4 text-green-700 bg-green-100 p-3 rounded">
                         {{ session('success') }}
                     </div>
-                @else
-                    <div class="alert alert-success mt-4 text-red-700 bg-red-100 p-3 rounded">
-                        {{ session('error') }}
-                    </div>
                 @endif
+                @error('overlap')
+                    <div class="alert alert-danger mt-4 bg-red-200 text-red-700 p-3 rounded">{{ $message }}</div>
+                @enderror
+
             </form>
         </div>
     </div>

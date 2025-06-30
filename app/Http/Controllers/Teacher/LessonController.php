@@ -63,41 +63,118 @@ class LessonController extends Controller
 
 
     public function store(Request $request)
+{
+    $validated = $request->validate([
+        'student_id' => 'required|exists:students,id',
+        'course_id' => 'required|exists:courses,id',
+        'day' => 'required|date',
+        'time' => 'required|date_format:H:i',
+        'duration' => 'required|integer|min:1',
+    ]);
+
+    $teacherId = Auth::id();
+
+    // Trova l'enrollment corrispondente
+    $enrollment = CourseEnrollment::where('student_id', $validated['student_id'])
+        ->where('course_id', $validated['course_id'])
+        ->where('teacher_id', $teacherId)
+        ->first();
+
+    if (!$enrollment) {
+        return redirect()->back()->withErrors(['enrollment' => 'Nessuna iscrizione trovata per questo studente, corso e insegnante.']);
+    }
+
+    // Calcola orario inizio e fine della nuova lezione
+    $newStart = strtotime($validated['day'] . ' ' . $validated['time']);
+    $newEnd = $newStart + ($validated['duration'] * 60);
+
+    // Controlla sovrapposizioni con altre lezioni dello stesso insegnante
+    $overlappingLesson = Lesson::whereDate('day', $validated['day'])
+        ->whereHas('courseEnrollment', function ($query) use ($teacherId) {
+            $query->where('teacher_id', $teacherId);
+        })
+        ->get()
+        ->first(function ($lesson) use ($newStart, $newEnd) {
+            $existingStart = strtotime($lesson->day . ' ' . $lesson->time);
+            $existingEnd = $existingStart + ($lesson->duration * 60);
+            return $newStart < $existingEnd && $newEnd > $existingStart;
+        });
+
+    if ($overlappingLesson) {
+        return redirect()->back()->withErrors([
+            'overlap' => 'Esiste già una lezione sovrapposta per questo insegnante nello stesso orario.',
+        ]);
+    }
+
+    // Crea la lezione
+    Lesson::create([
+        'course_enrollment_id' => $enrollment->id,
+        'day' => $validated['day'],
+        'time' => $validated['time'],
+        'duration' => $validated['duration'],
+    ]);
+
+    return redirect()->back()->with('success', 'Lezione aggiunta con successo!');
+}
+
+
+    public function show()
     {
-        //dd($request);
-        $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'course_id' => 'required|exists:courses,id',
-            'day' => 'required|date',
-            'time' => 'required|date_format:H:i',
-            'duration' => 'required|integer|min:1',
-        ]);
-
-        //dd($validated);
-
         $teacherId = Auth::id();
+        $today = now()->startOfDay();
 
-        // Trova l'enrollment corrispondente
-        $enrollment = CourseEnrollment::where('student_id', $validated['student_id'])
-            ->where('course_id', $validated['course_id'])
-            ->where('teacher_id', $teacherId)
-            ->first();
+        $lessons = Lesson::with([
+    'courseEnrollment.course',
+    'courseEnrollment.student',
+    'courseEnrollment.teacher',
+])
+    ->whereHas('courseEnrollment', function ($query) use ($teacherId) {
+        $query->where('teacher_id', $teacherId);
+    })
+    ->orderBy('day')
+    ->get();
 
-        if (!$enrollment) {
-            return redirect()->back()->withErrors(['enrollment' => 'Nessuna iscrizione trovata per questo studente, corso e insegnante.']);
-        }
 
-        // Crea la lezione
-        Lesson::create([
-            'course_enrollment_id' => $enrollment->id,
-            'day' => $validated['day'],
-            'time' => $validated['time'],
-            'duration' => $validated['duration'],
-        ]);
+        $events = $lessons->map(function ($lesson) {
+            $start = $lesson->day . 'T' . substr($lesson->time, 0, 5) . ':00';
+            $startTimestamp = strtotime($lesson->day . ' ' . $lesson->time);
+            $endTimestamp = $startTimestamp + ($lesson->duration * 60);
+            $end = date('Y-m-d\TH:i:s', $endTimestamp);
 
-        return redirect()->back()
-        ->withErrors(['error' => 'Errore durante l\'aggiunta della lezione.'])
-        ->with('success', 'Lezione aggiunta con successo!');
+            $enrollment = $lesson->courseEnrollment;
+
+            $courseName = $enrollment?->course?->name ?? 'Corso sconosciuto';
+            $student = $enrollment?->student;
+            $studentName = $student?->name ?? 'Studente sconosciuto';
+            $studentFullName = $student ? "{$student->name} {$student->surname}" : 'Studente sconosciuto';
+
+            $teacher = $enrollment?->teacher;
+            $teacherFullName = $teacher ? "{$teacher->name} {$teacher->surname}" : 'Insegnante sconosciuto';
+
+
+            return [
+                'id' => $lesson->id,
+                'title' => "$courseName - $studentName",
+                'start' => $start,
+                'end' => $end,
+                'course_name' => $courseName,
+                'student_name' => $studentName,
+                'student_full_name' => $studentFullName,
+                'teacher_full_name' => $teacherFullName,
+            ];
+        });
+
+        //dd($events);
+
+        return view('teacher.calendar', ['events' => $events->toArray()]);
+    }
+
+    public function destroy($id)
+    {
+        $lesson = Lesson::findOrFail($id);
+
+        $lesson->delete();
+        return redirect()->back()->with('success', 'Lezione eliminata con successo.');
     }
     
 }

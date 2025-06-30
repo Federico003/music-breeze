@@ -21,7 +21,8 @@ use App\Http\Controllers\Teacher\LessonController as Lesson;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+
 
 Route::get('/login', function () {
     return view('auth.login');
@@ -60,6 +61,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/profile-edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile-update', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile-delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::get('/create-student', [DashboardController::class, 'viewCreateStudent'])->name('create-student');
     Route::post('/store-student', [StudentController::class, 'store'])->name('store-student');
     Route::get('/create-teacher', [DashboardController::class, 'viewCreateTeacher'])->name('create-teacher');
@@ -102,12 +104,16 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     });
 
     Route::get('/lessons', [App\Http\Controllers\Admin\LessonController::class, 'show'])->name('show-lessons');
+    
 });
 
 Route::middleware(['auth', 'role:insegnante'])->prefix('insegnante')->name('insegnante.')->group(function () {
      Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
      Route::get('create-lesson', [Lesson::class, 'viewCreateLesson'])->name('create-lesson');
      Route::post('/store-lesson', [Lesson::class, 'store'])->name('store-lesson');
+     Route::get('/lessons', [Lesson::class, 'show'])->name('show-lessons');
+     Route::delete('/lessons/{id}', [Lesson::class, 'destroy'])->name('destroy-lessons');
+
 
      //Route::get('/get-courses/{studentId}', [Lesson::class, 'getCourses']);
 

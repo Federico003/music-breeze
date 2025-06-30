@@ -31,7 +31,6 @@ class LessonController extends Controller
             'courseEnrollment.student',
             'courseEnrollment.teacher',
         ])
-            ->whereDate('day', '>=', $today->toDateString())
             ->orderBy('day')
             ->get();
 
@@ -68,4 +67,5 @@ class LessonController extends Controller
 
         return view('admin.calendar', ['events' => $events->toArray()]);
     }
+
 }

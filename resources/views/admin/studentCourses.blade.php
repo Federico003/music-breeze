@@ -8,10 +8,10 @@
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div class="space-y-4 m-4">
             @foreach ($students as $student)
-                <div x-data="{ open: false }" class="rounded-lg shadow dark:bg-gray-700 bg-gray-300">
+                <div x-data="{ open: false }" class="rounded-xl shadow dark:bg-gray-700 bg-orange-300">
                     <!-- Intestazione accordion -->
                     <button @click="open = !open"
-                        class="w-full px-4 py-2 text-left bg-gray-300 dark:bg-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none flex justify-between items-center rounded-xl">
+                        class="w-full px-4 py-2 text-left bg-orange-300 dark:bg-gray-700 dark:text-white hover:bg-orange-400 dark:hover:bg-gray-600 focus:outline-none flex justify-between items-center rounded-xl">
                         <span class="text-lg font-semibold">{{ $student->name }} {{ $student->surname }}</span>
                         <svg :class="{ 'rotate-180': open }" class="h-5 w-5 transform transition-transform duration-200"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -20,12 +20,12 @@
                     </button>
 
                     <!-- Corpo accordion -->
-                    <div x-show="open" x-transition class="px-4 py-4 rounded-xl text-black dark:text-white dark:bg-gray-700 bg-gray-300">
+                    <div x-show="open" x-transition class="px-4 py-4 rounded-xl text-black dark:text-white dark:bg-gray-700 bg-orange-300">
                         <form action="{{ route('admin.update-student-courses', $student->id) }}" method="POST">
                             @csrf
                             @method('PUT')
 
-                            <div class="grid md:grid-cols-2 gap-4">
+                            <div class="grid md:grid-cols-2 gap-4 bg-orange-300">
                                 @foreach ($courses as $course)
                                     <h4>{{ $course->name }}</h4>
                                     @php

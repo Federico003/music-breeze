@@ -32,10 +32,7 @@
                                     data-sort="student">
                                     Studente <i class="fa-solid fa-sort ml-1" data-sort="student"></i>
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer sortable"
-                                    data-sort="teacher">
-                                    Insegnante <i class="fa-solid fa-sort ml-1" data-sort="teacher"></i>
-                                </th>
+                                
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer sortable"
                                     data-sort="course">
                                     Corso <i class="fa-solid fa-sort ml-1" data-sort="course"></i>
@@ -65,8 +62,7 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $event['student_full_name'] ?? '-' }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $event['teacher_full_name'] ?? '-' }}
-                                    </td>
+                                    
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $event['course_name'] ?? '-' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ \Carbon\Carbon::parse($event['start'])->format('d/m/Y') }}</td>

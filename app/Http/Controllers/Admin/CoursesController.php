@@ -30,10 +30,29 @@ class CoursesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function storeCourse(Request $request)
     {
-        //
+        // Validazione dei dati
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        // Creazione del corso
+        $course = Course::create([
+            'name' => $validated['name'],
+            'description' => $validated['description'] ?? null,
+        ]);
+
+        // Risposta (puoi cambiare in base al tipo di app: redirect, JSON, ecc.)
+        // return response()->json([
+        //     'message' => 'Corso creato con successo.',
+        //     'course' => $course,
+        // ], 201);
+        return redirect()->route('admin.courses') // O dove vuoi reindirizzare dopo l'update
+            ->with('success', 'Corso creato con successo.');
     }
+
 
     /**
      * Display the specified resource.
@@ -59,20 +78,21 @@ class CoursesController extends Controller
     public function update(Request $request, Course $course)
     {
         $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'required|string',
-    ]);
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
 
-    $id = $request->route('id'); // Assuming the route parameter is named 'id'
+        $id = $request->route('id'); // Assuming the route parameter is named 'id'
 
-    $course = Course::findOrFail($id);
-    $course->update($validatedData);
+        $course = Course::findOrFail($id);
+        $course->update($validatedData);
 
-    return redirect()->route('admin.courses') // O dove vuoi reindirizzare dopo l'update
-                     ->with('success', 'Corso modificato con successo.');
+        return redirect()->route('admin.courses') // O dove vuoi reindirizzare dopo l'update
+            ->with('success', 'Corso modificato con successo.');
     }
 
-    public function print($id){
+    public function print($id)
+    {
         try {
             $course = Course::findOrFail($id);
 

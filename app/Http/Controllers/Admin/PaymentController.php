@@ -24,48 +24,78 @@ class PaymentController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'student_id' => ['required', 'exists:users,id'],
-            'course_id' => ['required', 'exists:courses,id'],
-            'payment_type_id' => ['required', 'exists:payment_type,id'],
-            'month' => ['nullable', 'exists:month,id'],
+{
+    $validated = $request->validate([
+        'student_id' => ['required', 'exists:users,id'],
+        'course_id' => ['required', 'exists:courses,id'],
+        'payment_type_id' => ['required', 'exists:payment_type,id'],
+        'month' => ['nullable', 'exists:month,id'],
+        'year_monthly' => ['exclude_unless:payment_type_id,1', 'required_if:payment_type_id,1', 'digits:4', 'integer', 'min:1900', 'max:2100'],
+        'year_annual' => ['exclude_unless:payment_type_id,2', 'required_if:payment_type_id,2', 'digits:4', 'integer', 'min:1900', 'max:2100'],
+        'amount' => ['required', 'numeric', 'min:0'],
+    ]);
 
-            'year_monthly' => [
-                'exclude_unless:payment_type_id,1',
-                'required_if:payment_type_id,1',
-                'digits:4',
-                'integer',
-                'min:1900',
-                'max:2100',
-            ],
+    $studentId = $validated['student_id'];
+    $courseId = $validated['course_id'];
+    $paymentType = $validated['payment_type_id'];
+    $year = $paymentType == 1 ? $validated['year_monthly'] : $validated['year_annual'];
 
-            'year_annual' => [
-                'exclude_unless:payment_type_id,2',
-                'required_if:payment_type_id,2',
-                'digits:4',
-                'integer',
-                'min:1900',
-                'max:2100',
-            ],
+    // 🚫 Controllo duplicati per lo stesso tipo
+    $query = Payment::where('student_id', $studentId)
+        ->where('course_id', $courseId)
+        ->where('payment_type_id', $paymentType)
+        ->where('year', $year);
 
-            'amount' => ['required', 'numeric', 'min:0'],
-        ]);
-
-        // Determina l'anno corretto in base al tipo di pagamento
-        $year = $validated['payment_type_id'] == 1
-            ? $validated['year_monthly']
-            : $validated['year_annual'];
-
-        Payment::create([
-            'student_id' => $validated['student_id'],
-            'course_id' => $validated['course_id'],
-            'payment_type_id' => $validated['payment_type_id'],
-            'month_id' => $validated['month'] ?? null,
-            'year' => $year,
-            'amount' => $validated['amount'],
-        ]);
-
-        return redirect()->back()->with('success', 'Pagamento registrato con successo.');
+    if ($paymentType == 1) {
+        $query->where('month_id', $validated['month']);
     }
+
+    if ($query->exists()) {
+        return redirect()->back()->withErrors([
+            'duplicate' => 'Esiste già un pagamento di questo tipo per questo studente, corso e anno.',
+        ])->withInput();
+    }
+
+    // 🔄 Controlli incrociati tra mensile e annuale
+    if ($paymentType == 1) {
+        // Mensile: non deve esistere già un annuale
+        $existsAnnual = Payment::where('student_id', $studentId)
+            ->where('course_id', $courseId)
+            ->where('payment_type_id', 2) // Annuale
+            ->where('year', $year)
+            ->exists();
+
+        if ($existsAnnual) {
+            return redirect()->back()->withErrors([
+                'conflict' => 'Non puoi inserire un pagamento mensile per un anno in cui esiste già un pagamento annuale.',
+            ])->withInput();
+        }
+    } elseif ($paymentType == 2) {
+        // Annuale: non deve esistere già un mensile
+        $existsMonthly = Payment::where('student_id', $studentId)
+            ->where('course_id', $courseId)
+            ->where('payment_type_id', 1) // Mensile
+            ->where('year', $year)
+            ->exists();
+
+        if ($existsMonthly) {
+            return redirect()->back()->withErrors([
+                'conflict' => 'Non puoi inserire un pagamento annuale per un anno in cui esistono già pagamenti mensili.',
+            ])->withInput();
+        }
+    }
+
+    // ✅ Se tutto ok, salva
+    Payment::create([
+        'student_id' => $studentId,
+        'course_id' => $courseId,
+        'payment_type_id' => $paymentType,
+        'month_id' => $validated['month'] ?? null,
+        'year' => $year,
+        'amount' => $validated['amount'],
+    ]);
+
+    return redirect()->back()->with('success', 'Pagamento registrato con successo.');
+}
+
 }

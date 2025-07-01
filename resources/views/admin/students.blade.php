@@ -11,7 +11,7 @@
 
                 <div class="overflow-x-auto sm:rounded-lg bg-grey-200">
                     <x-table :headers="[
-                        'ID',
+                        '#',
                         'Nome',
                         'Cognome',
                         'Data di Nascita',
@@ -22,7 +22,7 @@
                         '',
                     ]">
                         @foreach ($students as $student)
-                            <tr class="hover:bg-orange-200 dark:hover:bg-gray-700 transition">
+                            <tr class="hover:bg-orange-300 dark:hover:bg-gray-700 transition">
                                 <td class="px-4 py-3">{{ $student->id }}</td>
                                 <td class="px-4 py-3">{{ $student->name }}</td>
                                 <td class="px-4 py-3">{{ $student->surname }}</td>
@@ -36,7 +36,7 @@
 
                                         <a href=""
                                             title="Modifica"
-                                            class="dark:text-white hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 p-2 m-2">
+                                            class="dark:text-white hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 p-1">
                                             <x-heroicon-s-document-currency-dollar />
                                         </a>
 
@@ -44,14 +44,14 @@
                                         {{-- Modifica --}}
                                         <a href="{{ route('admin.edit-user', ['id' => $student->id]) }}"
                                             title="Modifica"
-                                            class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 p-2 m-2">
+                                            class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 p-1">
                                             <x-heroicon-s-pencil class="w-5 h-5" />
                                         </a>
 
                                         {{-- Stampa --}}
                                         <a href="{{ route('admin.print-user', ['id' => $student->id]) }}"
                                             title="Stampa"
-                                            class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 p-2 m-2">
+                                            class="text-black hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 p-1">
                                             <x-heroicon-s-printer class="w-5 h-5" />
                                         </a>
 
@@ -62,7 +62,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" title="Elimina"
-                                                class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600 p-2 m-2">
+                                                class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600 p-1">
                                                 <x-heroicon-s-trash class="w-5 h-5" />
                                             </button>
                                         </form>

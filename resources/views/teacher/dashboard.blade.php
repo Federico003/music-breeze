@@ -69,7 +69,7 @@
                         <span class="text-gray-700 dark:text-gray-400">NUOVA LEZIONE</span>
                     </button>
 
-                    <button onclick="window.location.href='{{ route('insegnante.show-lessons') }}'"
+                    <button onclick="window.location.href='{{ route('insegnante.show-calendar') }}'"
                     class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 m-4 flex flex-col items-center justify-center hover:bg-indigo-100 dark:hover:bg-indigo-700 transition duration-300">
                     <div
                         class="w-10 h-10 rounded-full bg-orange-100 dark:bg-indigo-600 flex items-center justify-center text-orange-600 dark:text-indigo-200 mb-2">

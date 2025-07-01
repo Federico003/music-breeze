@@ -18,12 +18,9 @@
 
 <body class="font-sans text-gray-900 antialiased">
     @include('layouts.navigation')
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+    <div class="flex flex-col items-center pt-10 bg-orange-100 dark:bg-gray-900 min-h-screen">
 
-        <a href="/">
-            <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-        </a>
-        <div class="text-black dark:text-white">
+        <div class="text-black dark:text-white text-3xl">
             MODIFICA UTENTE
         </div>
 

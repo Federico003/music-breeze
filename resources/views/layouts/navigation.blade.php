@@ -23,7 +23,7 @@
 
 
                     <!-- Navigation Links -->
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <div class="hidden sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('dashboard')" >
                             {{ __('DASHBOARD') }}
                         </x-nav-link>
@@ -68,7 +68,7 @@
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
-                                class="inline-flex items-center px-3 py-2 border border-transparent text-md leading-4 font-medium rounded-md text-black dark:text-gray-400 bg-orange-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-md leading-4 font-medium rounded-md text-black dark:text-gray-400 hover:text-white bg-orange-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                                 <div>{{ Auth::user()->name }}</div>
 
                                 <div class="ms-1">
@@ -170,20 +170,16 @@
 
 
                     <!-- Navigation Links -->
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link {{--:href="route('insegnante.dashboard')"--}} :active="request()->routeIs('dashboard')" >
+                    <div class="hidden sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('insegnante.dashboard')" :active="request()->routeIs('dashboard')" >
                             {{ __('DASHBOARD') }}
                         </x-nav-link>
 
-                        <x-nav-link {{--:href="route('insegnante.dashboard')"--}} :active="request()->routeIs('courses')">
-                            {{ __('CORSI') }}
-                        </x-nav-link>
-
-                        <x-nav-link {{--:href="route('insegnante.dashboard')"--}} :active="request()->routeIs('students')">
+                        <x-nav-link :href="route('insegnante.students')" :active="request()->routeIs('students')">
                             {{ __('STUDENTI') }}
                         </x-nav-link>
 
-                        <x-nav-link {{--:href="route('insegnante.dashboard')"--}} :active="request()->routeIs('lessons')">
+                        <x-nav-link :href="route('insegnante.show-lessons')" :active="request()->routeIs('lessons')">
                             {{ __('LEZIONI') }}
                         </x-nav-link>
 

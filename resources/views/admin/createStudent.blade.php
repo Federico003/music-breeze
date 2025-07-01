@@ -18,12 +18,9 @@
 
 <body class="font-sans text-gray-900 antialiased">
     @include('layouts.navigation')
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+    <div class="flex flex-col items-center pt-10 bg-orange-100 dark:bg-gray-900 min-h-screen">
 
-        <a href="/">
-            <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-        </a>
-        <div class="text-black dark:text-white">
+        <div class="text-black dark:text-white text-3xl">
             NUOVO STUDENTE
         </div>
 
@@ -129,16 +126,6 @@
                         autocomplete="current-password" />
 
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                </div>
-
-                <!-- Remember Me -->
-                <div class="block mt-4">
-                    <label for="remember_me" class="inline-flex items-center">
-                        <input id="remember_me" type="checkbox"
-                            class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800"
-                            name="remember">
-                        <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-                    </label>
                 </div>
 
                 <div class="flex items-center justify-end mt-4">

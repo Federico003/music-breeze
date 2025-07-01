@@ -81,6 +81,9 @@
                 @error('overlap')
                     <div class="alert alert-danger mt-4 bg-red-200 text-red-700 p-3 rounded">{{ $message }}</div>
                 @enderror
+                @error('overlap_student')
+                    <div class="alert alert-danger mt-4 bg-red-200 text-red-700 p-3 rounded">{{ $message }}</div>
+                @enderror
 
             </form>
         </div>

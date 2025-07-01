@@ -157,7 +157,7 @@
 
 <body>
     <!-- Header -->
-    <header class="header fixed w-full z-50 bg-white">
+    <header class="header fixed w-full z-50 bg-orange-800">
         <div class="container mx-auto px-6 py-3">
             <div class="flex items-center justify-between">
                 <!-- LOGO a sinistra -->
@@ -170,15 +170,15 @@
                     <nav class="hidden md:flex justify-between items-center w-full">
                         <ul class="flex space-x-8">
                             <li><a href="#"
-                                    class="text-gray-800 hover:text-orange-500 font-medium transition">Home</a></li>
+                                    class="text-white hover:text-orange-400 font-medium transition duration-300">Home</a></li>
                             <li><a href="#courses"
-                                    class="text-gray-800 hover:text-orange-500 font-medium transition">Corsi</a></li>
+                                    class="text-white hover:text-orange-400 font-medium transition duration-300">Corsi</a></li>
                             <li><a href="#teachers"
-                                    class="text-gray-800 hover:text-orange-500 font-medium transition">Insegnanti</a>
+                                    class="text-white hover:text-orange-400 font-medium transition duration-300">Insegnanti</a>
                             </li>
                             {{-- <li><a href="#about" class="text-gray-800 hover:text-orange-500 font-medium transition">Chi Siamo</a></li> --}}
                             <li><a href="#contact"
-                                    class="text-gray-800 hover:text-orange-500 font-medium transition">Contatti</a></li>
+                                    class="text-white hover:text-orange-400 font-medium transition duration-300">Contatti</a></li>
                         </ul>
 
                         <!-- LOGIN / DASHBOARD -->
@@ -195,12 +195,12 @@
                                     };
                                 @endphp
                                 <a href="{{ url($dashboardUrl) }}"
-                                    class="inline-block px-5 py-1.5 text-[#1b1b18] border border-[#19140035] hover:border-[#1915014a] dark:text-[#EDEDEC] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">
+                                    class="inline-block px-5 py-1.5 text-white border border-white bg-transparent transition duration-300 ease-in-out rounded-sm text-sm leading-normal hover:bg-[#FF7D34]/90 hover:border-[#FF7D34]">
                                     Dashboard
                                 </a>
                             @else
                                 <a href="{{ route('login') }}"
-                                    class="inline-block px-5 py-1.5 text-[#1E1E1E] border border-[#1E1E1E] bg-transparent transition duration-300 ease-in-out rounded-sm text-sm leading-normal hover:bg-[#FF7D34]/90 hover:border-[#FF7D34]">
+                                    class="inline-block px-5 py-1.5 text-white border border-white bg-transparent transition duration-300 ease-in-out rounded-sm text-sm leading-normal hover:bg-[#FF7D34]/90 hover:border-[#FF7D34]">
                                     Log in
                                 </a>
                             @endauth
@@ -601,9 +601,8 @@
                 <div>
                     <h3 class="text-xl font-bold mb-4">Orari</h3>
                     <ul class="text-gray-400 space-y-2">
-                        <li>Lun-Ven: 9:00 - 21:00</li>
-                        <li>Sabato: 9:00 - 18:00</li>
-                        <li>Domenica: Chiuso</li>
+                        <li>Lun-Ven: 15:00 - 20:00</li>
+                        <li>Sabato e Domenica: Chiuso</li>
                     </ul>
                 </div>
                 <div>
@@ -621,7 +620,7 @@
                     </ul>
                     <div class="flex space-x-4 mt-4">
                         <a href="https://www.facebook.com/rockmusicacademy"
-                            class="w通arriage-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-primary transition">
+                            class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-primary transition">
                             <i class="fab fa-facebook-f"></i>
                         </a>
                         <a href="https://www.instagram.com/rockmusicacademy/"
@@ -632,11 +631,16 @@
                             class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-primary transition">
                             <i class="fab fa-youtube"></i>
                         </a>
+
+                        <a href="https://www.tiktok.com/@rmarockmusicacade?_t=8a2VdfeX81G&_r=1"
+                            class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-primary transition">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
                     </div>
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-                <p>© 2025 Rock Music Academy. Tutti i diritti riservati.</p>
+                <p>Copyrights 2025 © RMA - Rock Music Academy, Associazione culturale musicale</p>
             </div>
         </div>
     </footer>

@@ -11,7 +11,7 @@
 
                 <div class="overflow-x-auto sm:rounded-lg bg-grey-200">
                     <x-table :headers="[
-                        'ID',
+                        '#',
                         'Nome',
                         'Cognome',
                         'Data di Nascita',
@@ -22,7 +22,7 @@
                         '',
                     ]">
                         @foreach ($users as $user)
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                            <tr class="hover:bg-orange-300 dark:hover:bg-gray-700 transition">
                                 <td class="px-4 py-3">{{ $user->id }}</td>
                                 <td class="px-4 py-3">{{ $user->name }}</td>
                                 <td class="px-4 py-3">{{ $user->surname }}</td>
@@ -36,13 +36,13 @@
 
                                         {{-- Modifica --}}
                                         <a href="{{ route('admin.edit-user', ['id' => $user->id]) }}" title="Modifica"
-                                            class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 p-2 m-2">
+                                            class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 p-1">
                                             <x-heroicon-s-pencil class="w-6 h-6" />
                                         </a>
 
                                         {{-- Stampa --}}
                                         <a href="{{ route('admin.print-user', ['id' => $user->id]) }}" title="Stampa"
-                                            class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 p-2 m-2">
+                                            class="text-black hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 p-1">
                                             <x-heroicon-s-printer class="w-6 h-6" />
                                         </a>
 

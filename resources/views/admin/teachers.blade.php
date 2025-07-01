@@ -10,9 +10,9 @@
             <div class="bg-grey-200 dark:bg-gray-900 shadow-sm sm:rounded-2xl m-6 mb-6">
 
                 <div class="overflow-x-auto sm:rounded-lg bg-grey-200">
-                    <x-table :headers="['ID', 'Nome', 'Cognome', 'Data di Nascita', 'Telefono', 'Email', 'Inserito il', 'Aggiornato', '']">
+                    <x-table :headers="['#', 'Nome', 'Cognome', 'Data di Nascita', 'Telefono', 'Email', 'Inserito il', 'Aggiornato', '']">
                         @foreach ($teachers as $teacher)
-                            <tr class="hover:bg-orange-200 dark:hover:bg-gray-700 transition">
+                            <tr class="hover:bg-orange-300 dark:hover:bg-gray-700 transition">
                                 <td class="px-4 py-3">{{ $teacher->id }}</td>
                                 <td class="px-4 py-3">{{ $teacher->name }}</td>
                                 <td class="px-4 py-3">{{ $teacher->surname }}</td>
@@ -26,13 +26,13 @@
 
                                         {{-- Modifica --}}
                                         <a href="{{route('admin.edit-user', ['id' => $teacher->id])}}" title="Modifica"
-                                            class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 p-2 m-2">
+                                            class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 p-1">
                                             <x-heroicon-s-pencil class="w-6 h-6" />
                                         </a>
 
                                         {{-- Stampa --}}
                                         <a href="{{route('admin.print-user', ['id' => $teacher->id])}}" title="Stampa"
-                                            class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 p-2 m-2">
+                                            class="text-black hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 p-1">
                                             <x-heroicon-s-printer class="w-6 h-6" />
                                         </a>
 
@@ -42,7 +42,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" title="Elimina"
-                                                class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600 p-2 m-2">
+                                                class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600 p-1">
                                                 <x-heroicon-s-trash class="w-6 h-6" />
                                             </button>
                                         </form>

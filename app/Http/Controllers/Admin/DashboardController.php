@@ -28,15 +28,17 @@ class DashboardController extends Controller
         return view('admin.profile', compact('user'));
     }
 
+    public function viewCreateCourse(){
+        return view('admin.createCourse');
+    }
+
     public function viewCreateStudent()
     {
-
         return view('admin.createStudent');
     }
 
     public function viewCreateTeacher()
     {
-
         return view('admin.createTeacher');
     }
 

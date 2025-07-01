@@ -19,9 +19,9 @@
 <body class="font-sans text-gray-900 antialiased">
     @include('layouts.navigation')
     <div class="flex flex-col items-center pt-10 bg-orange-100 dark:bg-gray-900 min-h-screen">
-
+       
         <div class="text-black dark:text-white text-3xl">
-            MODIFICA CORSO
+            NUOVO CORSO
         </div>
 
 
@@ -32,30 +32,29 @@
             <!-- Session Status -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
-            <form method="POST" action="{{ route('admin.update-course', ['id' => $course->id]) }}">
-
-                {{ csrf_field() }}
-                {{ method_field('PATCH') }}
+            <form method="POST" action="{{ route('admin.store-course') }}">
+                @csrf
 
                 <!-- Email Address -->
                 <div class="mt-4">
                     <x-input-label for="name" :value="__('Nome')" />
                     <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
-                        :value="old('name', $course->name)" required autofocus autocomplete="name" />
+                        :value="old('name')" required autofocus autocomplete="name" />
                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
 
                 <div class="mt-4">
-                    <x-input-label for="description" :value="__('Descrizione')" />
+                    <x-input-label for="description" :value="__('Descrizione corso')" />
                     <x-text-input id="description" class="block mt-1 w-full" type="text" name="description"
-                        :value="old('description', $course->description)" required autofocus autocomplete="description" />
+                        :value="old('description')" required autofocus autocomplete="description" />
                     <x-input-error :messages="$errors->get('description')" class="mt-2" />
                 </div>
 
+                
 
                 <div class="flex items-center justify-end mt-4">
                     <x-primary-button class="ms-3">
-                        {{ __('Modifica Corso') }}
+                        {{ __('Registra Corso') }}
                     </x-primary-button>
                 </div>
             </form>

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Teacher\DashboardController as Dashboard;
 use App\Http\Controllers\Teacher\LessonController as Lesson;
+use App\Http\Controllers\Teacher\StudentController as Students;
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,7 +51,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/courses', [DashboardController::class, 'viewCourses'])->name('courses');
     Route::get('/create-course', [DashboardController::class, 'viewCreateCourse'])->name('create-course');
-    Route::post('/store-course', [DashboardController::class, 'storeCourse'])->name('store-course');
+    Route::post('/store-course', [CoursesController::class, 'storeCourse'])->name('store-course');
     Route::get('/course/{id}/edit', [CoursesController::class, 'edit'])->name('edit-course');
     Route::patch('/course/{id}/update', [CoursesController::class, 'update'])->name('update-course');
     Route::get('/course/{id}/print', [CoursesController::class, 'print'])->name('print-course');
@@ -66,6 +67,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/store-student', [StudentController::class, 'store'])->name('store-student');
     Route::get('/create-teacher', [DashboardController::class, 'viewCreateTeacher'])->name('create-teacher');
     Route::post('/store-teacher', [TeacherController::class, 'store'])->name('store-teacher');
+    
 
     Route::get('/students', [StudentController::class, 'index'])->name('students');
 
@@ -111,8 +113,14 @@ Route::middleware(['auth', 'role:insegnante'])->prefix('insegnante')->name('inse
      Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
      Route::get('create-lesson', [Lesson::class, 'viewCreateLesson'])->name('create-lesson');
      Route::post('/store-lesson', [Lesson::class, 'store'])->name('store-lesson');
-     Route::get('/lessons', [Lesson::class, 'show'])->name('show-lessons');
+     Route::get('/calendar', [Lesson::class, 'show'])->name('show-calendar');
      Route::delete('/lessons/{id}', [Lesson::class, 'destroy'])->name('destroy-lessons');
+
+     Route::get('/students', [Students::class, 'show'])->name('students');
+     Route::get('/lessons', [Lesson::class, 'showLessons'])->name('show-lessons');
+     Route::put('/update-lessons/{id}', [Lesson::class, 'update'])->name('update-lesson');
+     Route::delete('/destroy-lessons/{id}', [Lesson::class, 'destroy'])->name('destroy-lessons');
+
 
 
      //Route::get('/get-courses/{studentId}', [Lesson::class, 'getCourses']);

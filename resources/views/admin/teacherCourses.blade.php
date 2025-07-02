@@ -25,7 +25,7 @@
                             @csrf
                             @method('PUT')
 
-                            <div class="flex flex-wrap gap-4 bg-orange-300">
+                            <div class="flex flex-wrap gap-4 bg-orange-300 dark:bg-gray-700">
                                 @foreach ($courses as $course)
                                     <label
                                         class="flex items-center min-w-[200px] dark:text-white dark:bg-gray-800 bg-orange-300 p-2 rounded">

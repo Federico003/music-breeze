@@ -25,7 +25,7 @@
                             @csrf
                             @method('PUT')
 
-                            <div class="grid md:grid-cols-2 gap-4 bg-orange-300">
+                            <div class="grid md:grid-cols-2 gap-4 bg-orange-300 dark:bg-gray-700">
                                 @foreach ($courses as $course)
                                     <h4>{{ $course->name }}</h4>
                                     @php

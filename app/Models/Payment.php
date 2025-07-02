@@ -16,4 +16,24 @@ class Payment extends Model
     'year',
     'amount',
 ];
+
+public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    public function paymentType()
+    {
+        return $this->belongsTo(PaymentType::class);
+    }
+
+    public function month()
+    {
+        return $this->belongsTo(Month::class);
+    }
 }

@@ -1,8 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-white">
-            {{ __('Lista Lezioni') }}
-        </h2>
+    <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
+                {{ __('Lezioni') }}
+            </h2>
+            <x-primary-button onclick="window.location.href='{{ route('insegnante.create-lesson') }}'"> Aggiungi Lezione </x-primary-button>
+        </div>    
     </x-slot>
 
     <div class="py-6 dark:bg-gray-900">
@@ -55,7 +58,7 @@
                                             <td class="px-4 py-3 whitespace-nowrap actions-cell">
                                                 <div class="flex items-center space-x-3">
                                                     <button type="button"
-                                                        class="edit-btn text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 p-2 m-2"
+                                                        class="edit-btn text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 p-1"
                                                         title="Modifica">
                                                         <x-heroicon-s-pencil class="w-5 h-5" />
                                                     </button>
@@ -66,7 +69,7 @@
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" title="Elimina"
-                                                            class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600 p-2 m-2">
+                                                            class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600 p-1">
                                                             <x-heroicon-s-trash class="w-5 h-5" />
                                                         </button>
                                                     </form>

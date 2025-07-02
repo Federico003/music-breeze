@@ -1,9 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
+    <div class="flex items-center justify-between">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
             {{ __('Corsi') }}
         </h2>
-    </x-slot>
+        <x-primary-button onclick="window.location.href='{{ route('admin.create-course') }}'"> Aggiungi Corso </x-primary-button>
+    </div>
+</x-slot>
+
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

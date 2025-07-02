@@ -1,8 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
-            {{ __('Studenti') }}
-        </h2>
+        <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
+                {{ __('Studenti') }}
+            </h2>
+            <x-primary-button onclick="window.location.href='{{ route('admin.create-student') }}'"> Aggiungi Studente </x-primary-button>
+        </div>
     </x-slot>
 
     <div class="py-12">
@@ -34,8 +37,7 @@
                                 <td class="px-4 py-3">
                                     <div class="flex items-center space-x-3">
 
-                                        <a href=""
-                                            title="Modifica"
+                                        <a href="" title="Modifica"
                                             class="dark:text-white hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 p-1">
                                             <x-heroicon-s-document-currency-dollar />
                                         </a>

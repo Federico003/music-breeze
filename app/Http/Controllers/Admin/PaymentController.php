@@ -14,6 +14,40 @@ use App\Models\Payment;
 class PaymentController extends Controller
 {
 
+    public function index(Request $request)
+{
+    $payments = \App\Models\Payment::with(['student', 'course', 'paymentType', 'month'])
+        ->when($request->get('sort_by'), function ($query) use ($request) {
+            $direction = $request->get('direction', 'asc');
+            switch ($request->get('sort_by')) {
+                case 'student':
+                    $query->join('students', 'payments.student_id', '=', 'students.id')
+                          ->orderBy('students.name', $direction)
+                          ->select('payments.*');
+                    break;
+                case 'course':
+                    $query->join('courses', 'payments.course_id', '=', 'courses.id')
+                          ->orderBy('courses.name', $direction)
+                          ->select('payments.*');
+                    break;
+                case 'date':
+                    $query->orderBy('created_at', $direction);
+                    break;
+            }
+        })
+        ->paginate(20); // Optional: paginazione
+
+        //dd($payments);
+
+    return view('admin.payments', compact('payments'));
+    return view('admin.payments', [
+        'payments' => $payments,
+        'currentSort' => request('sort'),
+        'currentDirection' => request('direction'),
+    ]);
+}
+
+
     public function viewCreatePayment()
     {
         $students = Student::all();
@@ -97,5 +131,38 @@ class PaymentController extends Controller
 
     return redirect()->back()->with('success', 'Pagamento registrato con successo.');
 }
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'amount' => 'required|numeric|min:0.01',
+    ]);
+
+    $payment = Payment::find($id);
+
+    if (!$payment) {
+        return response()->json(['message' => 'Pagamento non trovato'], 404);
+    }
+
+    $payment->amount = $request->input('amount');
+    $payment->save();
+
+    return response()->json(['message' => 'Pagamento aggiornato con successo']);
+}
+
+public function destroy($id)
+{
+    $payment = Payment::find($id);
+
+    if (!$payment) {
+        return redirect()->back()->with('error', 'Pagamento non trovato.');
+    }
+
+    $payment->delete();
+
+    return redirect()->back()->with('success', 'Pagamento eliminato con successo.');
+}
+
+
 
 }

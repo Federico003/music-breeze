@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Teacher\DashboardController as Dashboard;
 use App\Http\Controllers\Teacher\LessonController as Lesson;
 use App\Http\Controllers\Teacher\StudentController as Students;
+use App\Models\Payment;
 
 Route::get('/', function () {
     return view('welcome');
@@ -67,7 +68,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/store-student', [StudentController::class, 'store'])->name('store-student');
     Route::get('/create-teacher', [DashboardController::class, 'viewCreateTeacher'])->name('create-teacher');
     Route::post('/store-teacher', [TeacherController::class, 'store'])->name('store-teacher');
-    
+
 
     Route::get('/students', [StudentController::class, 'index'])->name('students');
 
@@ -86,64 +87,66 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('student-courses', [StudentController::class, 'indexStudentCourses'])->name('student-courses');
     Route::put('/student-courses/update/{student}', [StudentController::class, 'updateStudentCourses'])->name('update-student-courses');
 
-    Route::get('/payments', [DashboardController::class, 'viewPayments'])->name('payments');
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments');
     Route::get('/create-payment', [PaymentController::class, 'viewCreatePayment'])->name('create-payment');
     Route::post('/store-payment', [PaymentController::class, 'store'])->name('store-payment');
     Route::delete('/payment/{id}/delete', [DashboardController::class, 'deletePayment'])->name('delete-payment');
 
     Route::get('/payment/students/{student}/courses', function (Student $student) {
         $courses = CourseEnrollment::where('student_id', $student->id)
-        ->with('course:id,name') // Carica solo id e name del corso
-        ->get()
-        ->map(function ($enrollment) {
-            return [
-                'id' => $enrollment->course->id,
-                'name' => $enrollment->course->name,
-            ];
-        });
+            ->with('course:id,name') // Carica solo id e name del corso
+            ->get()
+            ->map(function ($enrollment) {
+                return [
+                    'id' => $enrollment->course->id,
+                    'name' => $enrollment->course->name,
+                ];
+            });
         //dd($courses);
         return response()->json($courses);
     });
 
     Route::get('/lessons', [App\Http\Controllers\Admin\LessonController::class, 'show'])->name('show-lessons');
-    
+
+    Route::put('/update-payment/{id}', [PaymentController::class, 'update'])->name('update-payment');
+    Route::delete('/destroy-payment/{id}', [PaymentController::class, 'destroy'])->name('destroy-payment');
 });
+    
+
 
 Route::middleware(['auth', 'role:insegnante'])->prefix('insegnante')->name('insegnante.')->group(function () {
-     Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
-     Route::get('create-lesson', [Lesson::class, 'viewCreateLesson'])->name('create-lesson');
-     Route::post('/store-lesson', [Lesson::class, 'store'])->name('store-lesson');
-     Route::get('/calendar', [Lesson::class, 'show'])->name('show-calendar');
-     Route::delete('/lessons/{id}', [Lesson::class, 'destroy'])->name('destroy-lessons');
+    Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
+    Route::get('create-lesson', [Lesson::class, 'viewCreateLesson'])->name('create-lesson');
+    Route::post('/store-lesson', [Lesson::class, 'store'])->name('store-lesson');
+    Route::get('/calendar', [Lesson::class, 'show'])->name('show-calendar');
+    Route::delete('/lessons/{id}', [Lesson::class, 'destroy'])->name('destroy-lessons');
 
-     Route::get('/students', [Students::class, 'show'])->name('students');
-     Route::get('/lessons', [Lesson::class, 'showLessons'])->name('show-lessons');
-     Route::put('/update-lessons/{id}', [Lesson::class, 'update'])->name('update-lesson');
-     Route::delete('/destroy-lessons/{id}', [Lesson::class, 'destroy'])->name('destroy-lessons');
+    Route::get('/students', [Students::class, 'show'])->name('students');
+    Route::get('/lessons', [Lesson::class, 'showLessons'])->name('show-lessons');
+    Route::put('/update-lessons/{id}', [Lesson::class, 'update'])->name('update-lesson');
+    Route::delete('/destroy-lessons/{id}', [Lesson::class, 'destroy'])->name('destroy-lessons');
 
 
 
-     //Route::get('/get-courses/{studentId}', [Lesson::class, 'getCourses']);
+    //Route::get('/get-courses/{studentId}', [Lesson::class, 'getCourses']);
 
-     Route::get('/get-courses/{studentId}', function ($studentId) {
-    $teacherId = auth()->id(); // insegnante autenticato
+    Route::get('/get-courses/{studentId}', function ($studentId) {
+        $teacherId = auth()->id(); // insegnante autenticato
 
-    $courses = CourseEnrollment::where('student_id', $studentId)
-        ->where('teacher_id', $teacherId) // filtra per insegnante loggato
-        ->with('course:id,name') // carica solo id e nome corso
-        ->get()
-        ->map(function ($enrollment) {
-            return [
-                'id' => $enrollment->course->id,
-                'name' => $enrollment->course->name,
-            ];
-        });
+        $courses = CourseEnrollment::where('student_id', $studentId)
+            ->where('teacher_id', $teacherId) // filtra per insegnante loggato
+            ->with('course:id,name') // carica solo id e nome corso
+            ->get()
+            ->map(function ($enrollment) {
+                return [
+                    'id' => $enrollment->course->id,
+                    'name' => $enrollment->course->name,
+                ];
+            });
         // dd($courses);
 
-    return response()->json($courses);
-});
-
-
+        return response()->json($courses);
+    });
 });
 
 Route::middleware(['auth', 'role:studente'])->group(function () {

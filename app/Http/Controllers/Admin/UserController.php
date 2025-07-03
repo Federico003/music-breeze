@@ -47,8 +47,14 @@ class UserController extends Controller
             'postal_code' => 'required|string|max:20',
             'phone' => 'required|string|max:20',
             'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            ],
         ]);
+
 
         $validatedData['user_type_id'] = 2; //Insegnante
         $validatedData['password'] = bcrypt($validatedData['password']);
@@ -122,7 +128,8 @@ class UserController extends Controller
         return redirect()->route('admin.dashboard')->with('success', 'Utente modificato con successo.');
     }
 
-    public function print($id){
+    public function print($id)
+    {
         try {
             $user = User::findOrFail($id);
 
@@ -137,7 +144,7 @@ class UserController extends Controller
                 'city' => $user->city,
                 'country' => $user->country,
                 'created_at' => $user->created_at,
-                'updated_at' => $user->updated_at,                
+                'updated_at' => $user->updated_at,
             ]);
             $pdf = Pdf::loadView('admin.pdf.user', compact('user'));
 
@@ -158,5 +165,4 @@ class UserController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', 'Utente eliminato con successo.');
     }
-    
 }

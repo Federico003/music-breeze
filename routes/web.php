@@ -110,6 +110,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     Route::put('/update-payment/{id}', [PaymentController::class, 'update'])->name('update-payment');
     Route::delete('/destroy-payment/{id}', [PaymentController::class, 'destroy'])->name('destroy-payment');
+    Route::get('/payment/{id}/print', [PaymentController::class, 'print'])->name('print-payment');
 });
     
 

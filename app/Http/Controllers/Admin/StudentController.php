@@ -37,19 +37,29 @@ class StudentController extends Controller
 
         //dd($request);
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'birth_date' => 'required|date',
-            'birth_place' => 'required|string|max:255',
-            'gender' => 'required|in:M,F',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:20',
-            'phone' => 'required|string|max:20',
-            'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8',
-        ]);
+        'name' => 'required|string|max:255',
+        'surname' => 'required|string|max:255',
+        'birth_date' => 'required|date',
+        'birth_place' => 'required|string|max:255',
+        'gender' => 'required|in:M,F',
+        'address' => 'required|string|max:255',
+        'city' => 'required|string|max:255',
+        'country' => 'required|string|max:255',
+        'postal_code' => 'required|string|max:20',
+        'phone' => 'required|string|max:20',
+        'email' => 'required|email|max:255|unique:users,email',
+        'password' => [
+            'required',
+            'string',
+            'min:8',
+            'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+        ],
+    ],
+    [
+        'password.regex' => 'La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale.',
+    ]
+);
+
 
         $validatedData['user_type_id'] = 3; // Studente
         $validatedData['password'] = bcrypt($validatedData['password']);

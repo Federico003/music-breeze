@@ -4,7 +4,8 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
                 {{ __('Lista Pagamenti') }}
             </h2>
-            <x-primary-button onclick="window.location.href='{{ route('admin.create-payment') }}'"> Aggiungi Pagamento </x-primary-button>
+            <x-primary-button onclick="window.location.href='{{ route('admin.create-payment') }}'"> Aggiungi Pagamento
+            </x-primary-button>
         </div>
     </x-slot>
 
@@ -60,7 +61,15 @@
                                                         title="Modifica">
                                                         <x-heroicon-s-pencil class="w-5 h-5" />
                                                     </button>
-                                                    <form action="{{ route('admin.destroy-payment', $payment->id) }}"  method="POST"
+
+                                                    <button onclick="window.location.href='{{ route('admin.print-payment', $payment->id) }}'" type="button"
+                                                        class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 p-1"
+                                                        title="Scarica ricevuta">
+                                                        <x-heroicon-s-document-arrow-down class="w-5 h-5 text-white"/>
+                                                    </button>
+
+                                                    <form action="{{ route('admin.destroy-payment', $payment->id) }}"
+                                                        method="POST"
                                                         onsubmit="return confirm('Sei sicuro di voler eliminare questo pagamento?');">
                                                         @csrf
                                                         @method('DELETE')
